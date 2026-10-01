@@ -1,0 +1,5 @@
+/* 80svh = 1024px tall at 1720x1280, so the 16:9 box is 1820px wide in a 1720px window. */
+.video {
+  height: 80svh; /* expect L4 */
+  aspect-ratio: 16 / 9;
+}

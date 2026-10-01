@@ -1,0 +1,151 @@
+{
+  "note": "Usable browser area in CSS px (not panel resolution). Order = report order. Update uw-half / uw-full with the manager's measured window.",
+  "primary": "uw-half",
+  "baseline": "design",
+  "compare": [
+    "design",
+    "uw-half",
+    "uw-half-stress",
+    "uw-full",
+    "uw-29",
+    "laptop-125"
+  ],
+  "viewports": [
+    {
+      "id": "uw-half",
+      "width": 1720,
+      "height": 1280,
+      "required": true,
+      "quick": true,
+      "represents": "34\" 3440x1440 ultrawide, browser snapped to half (Windows Snap / macOS tiling), Chrome with bookmarks bar. Primary target."
+    },
+    {
+      "id": "design",
+      "width": 1440,
+      "height": 900,
+      "required": true,
+      "quick": true,
+      "represents": "Framer desktop design frame; baseline for comparisons"
+    },
+    {
+      "id": "uw-half-stress",
+      "width": 1720,
+      "height": 1440,
+      "required": true,
+      "quick": false,
+      "represents": "Same monitor, half width at full panel height; the team's manual test size"
+    },
+    {
+      "id": "uw-full",
+      "width": 3440,
+      "height": 1280,
+      "required": true,
+      "quick": true,
+      "represents": "34\" ultrawide, maximized, Chrome with bookmarks bar"
+    },
+    {
+      "id": "uw-29",
+      "width": 2560,
+      "height": 940,
+      "required": true,
+      "quick": false,
+      "represents": "29\" 2560x1080 ultrawide (widest required aspect)"
+    },
+    {
+      "id": "qhd",
+      "width": 2560,
+      "height": 1300,
+      "required": true,
+      "quick": false,
+      "represents": "27\" 2560x1440"
+    },
+    {
+      "id": "fhd",
+      "width": 1920,
+      "height": 950,
+      "required": true,
+      "quick": false,
+      "represents": "1920x1080 desktop"
+    },
+    {
+      "id": "laptop-125",
+      "width": 1536,
+      "height": 730,
+      "required": true,
+      "quick": true,
+      "represents": "1920x1080 laptop at 125% scaling (smallest required height)"
+    },
+    {
+      "id": "mbp-14",
+      "width": 1512,
+      "height": 860,
+      "required": true,
+      "quick": false,
+      "represents": "MacBook Pro 14\" default"
+    },
+    {
+      "id": "uw-full-f11",
+      "width": 3440,
+      "height": 1440,
+      "required": true,
+      "quick": false,
+      "represents": "34\" ultrawide at the full 1440px panel height (fullscreen / F11, or a tall browser window). The team's monitors are usually 1440px high, so this height repeats on every project."
+    },
+    {
+      "id": "qhd-1440",
+      "width": 2560,
+      "height": 1440,
+      "required": true,
+      "quick": false,
+      "represents": "27\" 2560x1440 at the full panel height (fullscreen / F11)"
+    },
+    {
+      "id": "suw-49",
+      "width": 5120,
+      "height": 1300,
+      "required": false,
+      "quick": false,
+      "represents": "49\" super ultrawide 32:9"
+    },
+    {
+      "id": "qhd-half",
+      "width": 1280,
+      "height": 1300,
+      "required": false,
+      "quick": false,
+      "represents": "27\" QHD split in half: Desktop breakpoint at a square shape"
+    },
+    {
+      "id": "uw-third",
+      "width": 1147,
+      "height": 1280,
+      "required": false,
+      "quick": false,
+      "represents": "Ultrawide split in thirds: Framer shows the Tablet breakpoint"
+    },
+    {
+      "id": "mba-13",
+      "width": 1470,
+      "height": 810,
+      "required": false,
+      "quick": false,
+      "represents": "MacBook Air 13\" (M2 and later)"
+    },
+    {
+      "id": "small",
+      "width": 1280,
+      "height": 650,
+      "required": false,
+      "quick": false,
+      "represents": "Small laptop / short window"
+    },
+    {
+      "id": "tablet-l",
+      "width": 1180,
+      "height": 820,
+      "required": false,
+      "quick": false,
+      "represents": "iPad landscape"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+/* Aspect-locked stage (pattern 6.3). */
+.scene-stage {
+  width: min(100%, calc(100svh * 1440 / 900));
+  aspect-ratio: 1440 / 900;
+  margin: auto;
+}
+
+.panel {
+  flex-basis: 120svh;
+  max-width: 100%;
+}
+
+.hero-visual {
+  width: min(100%, 45cqw, 60svh);
+}

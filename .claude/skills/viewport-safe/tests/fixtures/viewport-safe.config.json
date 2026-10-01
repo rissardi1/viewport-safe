@@ -1,0 +1,10 @@
+{
+  "brand": "Fixture Brand",
+  "designFrame": { "width": 1440, "height": 900 },
+  "contentMaxWidth": 1440,
+  "gutter": { "min": 24, "max": 64, "fluid": "4vw" },
+  "displayTypeMax": 120,
+  "stagingUrl": "",
+  "pages": ["/"],
+  "auditHideSelectors": []
+}

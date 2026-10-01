@@ -1,0 +1,5 @@
+node_modules/
+viewport-audit/
+.vite/
+*.log
+.DS_Store

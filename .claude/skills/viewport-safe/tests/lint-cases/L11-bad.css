@@ -1,0 +1,13 @@
+/* Vertical spacing that follows the window width: 206px of top padding at 3440x1280. */
+.hero {
+  padding-top: 6vw; /* expect L11 */
+}
+
+.band {
+  padding: 5vw 24px; /* expect L11 */
+}
+
+.stack {
+  display: grid;
+  gap: 3vw; /* expect L11 */
+}

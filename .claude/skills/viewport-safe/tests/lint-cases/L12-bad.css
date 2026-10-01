@@ -1,0 +1,12 @@
+.badge {
+  position: absolute;
+  left: 5vw; /* expect L12 */
+}
+
+.title {
+  margin-bottom: 4vh; /* expect L12 */
+}
+
+.headline {
+  font-size: calc(80 * var(--vs-u)); /* expect L12 */
+}

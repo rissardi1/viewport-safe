@@ -1,0 +1,22 @@
+[
+  { "query": "can you build a hero section for the client homepage? big serif headline on the left, a photo of the amalfi coast on the right, two buttons. it's a framer code component", "should_trigger": true },
+  { "query": "add a GSAP scroll animation to this services section so the three cards pin and slide in horizontally as you scroll (file is components/ServicesPinned.tsx)", "should_trigger": true },
+  { "query": "port this React component from our old next.js site into a Framer code component: src/components/StatsBand.jsx", "should_trigger": true },
+  { "query": "my manager says the flywheel section looks broken on his screen, he has one of those wide LG monitors. can you take a look at V2.tsx?", "should_trigger": true },
+  { "query": "the gallery carousel on the about page is cut off on my laptop, the last card and the arrows disappear. fix pls", "should_trigger": true },
+  { "query": "we got a Spline scene from the designer, put it as the background of the homepage hero with the headline on top", "should_trigger": true },
+  { "query": "make the sticky stacking cards section responsive, right now the cards get taller than the screen", "should_trigger": true },
+  { "query": "review this Framer component before I ship it: it uses 100vh and a canvas animation, anything that could go wrong?", "should_trigger": true },
+  { "query": "turn the Unicorn Studio embed we have in the hero into a code component with property controls for the headline and CTA", "should_trigger": true },
+  { "query": "build a full-screen video intro section that fades into the page when you scroll", "should_trigger": true },
+  { "query": "write a script that syncs our Airtable 'Case Studies' table into the Framer CMS collection every night", "should_trigger": false },
+  { "query": "how many visitors did collateral.com get last week from linkedin, and which page converted best?", "should_trigger": false },
+  { "query": "fix the typo in the footer: 'Priavcy Policy' should be 'Privacy Policy'", "should_trigger": false },
+  { "query": "set up SEO meta titles and descriptions for the /services pages and add an OG image", "should_trigger": false },
+  { "query": "create a new CMS collection for team members with name, role, photo and linkedin url fields", "should_trigger": false },
+  { "query": "write an API route in our next.js app that receives the contact form and emails sales@", "should_trigger": false },
+  { "query": "what's the difference between vh and svh in CSS? just curious, not building anything", "should_trigger": false },
+  { "query": "set up redirects from the old /solutions/* urls to /services/*", "should_trigger": false },
+  { "query": "update the color tokens: primary should be #0D2A22 and the gold accent #C9A24A across the site", "should_trigger": false },
+  { "query": "export all our blog posts from the Framer CMS to a CSV with title, date and slug", "should_trigger": false }
+]

@@ -1,0 +1,11 @@
+.hero-title {
+  font-size: min(11vh, 8vw);
+}
+
+.hero-title--contained {
+  font-size: clamp(40px, min(11svh, 8cqi), 120px);
+}
+
+.hero-title--unit {
+  font-size: clamp(40px, 80 * var(--vs-u), 120px);
+}

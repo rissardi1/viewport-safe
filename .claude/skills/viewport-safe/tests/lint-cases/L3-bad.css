@@ -1,0 +1,9 @@
+/* Scene sized from the window height: 1820px wide at 1720x1280. */
+.scene {
+  width: calc(80vh * 16 / 9); /* expect L3 */
+  aspect-ratio: 16 / 9;
+}
+
+.panel {
+  flex-basis: 120svh; /* expect L3 */
+}

@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ ! -f \"${CLAUDE_PROJECT_DIR}/.claude/skills/viewport-safe/scripts/hook-lint.mjs\" ] || node \"${CLAUDE_PROJECT_DIR}/.claude/skills/viewport-safe/scripts/hook-lint.mjs\"",
+            "timeout": 20,
+            "statusMessage": "viewport-safe lint"
+          }
+        ]
+      }
+    ]
+  }
+}

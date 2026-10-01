@@ -1,0 +1,119 @@
+{
+  "skill_name": "viewport-safe",
+  "notes": "Run each prompt with the skill enabled, with tests/fixtures/viewport-safe.config.json as the brand config (copy it next to the output). Outputs go to a component .tsx file plus the final answer text.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "hero-with-video",
+      "prompt": "Build a Framer code component: full-screen hero with a giant headline, a subheading, two CTAs and a 16:9 video on the right.",
+      "expected_output": "A fit-type hero that passes the required matrix, with contained type, a video box capped on both axes and an above-fold CTA row.",
+      "files": ["tests/fixtures/viewport-safe.config.json"],
+      "assertions": [
+        "lint-sizing reports 0 errors on the component",
+        "viewport-audit --matrix required passes every required viewport",
+        "the final answer contains the viewport report table with uw-half as the first row",
+        "the component starts with a @vs-type header that names the scaling model of the video",
+        "the CTA row has data-vs containing above-fold and the hero has data-vs containing fit",
+        "a BRAND constant matches tests/fixtures/viewport-safe.config.json",
+        "the final answer has one visual-review line per compare sheet"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "gsap-horizontal-gallery",
+      "prompt": "Build a pinned horizontal scroll gallery of 8 property cards using GSAP ScrollTrigger.",
+      "expected_output": "A scroll-scene whose card height comes from svh with a px cap and a width bound, ScrollTrigger distances as functions measured from the section.",
+      "files": ["tests/fixtures/viewport-safe.config.json"],
+      "assertions": [
+        "lint-sizing reports 0 errors on the component",
+        "viewport-audit --matrix required passes every required viewport",
+        "ScrollTrigger end is a function using the section's width (not window.innerWidth) and invalidateOnRefresh is true",
+        "card height is bounded by svh, a px maximum and a width-derived bound",
+        "the final answer contains the viewport report table with uw-half as the first row"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "sticky-stacking-cards",
+      "prompt": "Build a sticky stacking cards section, 5 cards that stack as you scroll.",
+      "expected_output": "A scroll-scene whose sticky cards have max-height from svh minus the top offset, passing C2 at every scroll step.",
+      "files": ["tests/fixtures/viewport-safe.config.json"],
+      "assertions": [
+        "lint-sizing reports 0 errors on the component",
+        "viewport-audit --matrix required passes every required viewport",
+        "each sticky card has a max-height derived from 100svh minus its top offset",
+        "the final answer contains the viewport report table with uw-half as the first row"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "fix-broken-hero-wide",
+      "prompt": "Here is our existing component (tests/fixtures/BrokenHero.tsx). Make it work on my manager's monitor.",
+      "expected_output": "A fixed copy that keeps the design and passes the required matrix; the answer shows before/after results.",
+      "files": ["tests/fixtures/BrokenHero.tsx", "tests/fixtures/viewport-safe.config.json"],
+      "assertions": [
+        "the fixed component has 0 lint errors",
+        "viewport-audit --matrix required passes every required viewport on the fixed component",
+        "the answer reports the original failing at uw-full, uw-29 and laptop-125 before the fix",
+        "height: 100vh with overflow: hidden is replaced by min-height: 100svh",
+        "the final answer contains the viewport report table with uw-half as the first row"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "stats-band-no-overengineering",
+      "prompt": "Build a stats band with 4 big numbers that count up when in view.",
+      "expected_output": "A simple grow section: fixed px/rem type in a content container, no viewport units and no fit token.",
+      "files": ["tests/fixtures/viewport-safe.config.json"],
+      "assertions": [
+        "lint-sizing reports 0 errors and 0 warnings",
+        "viewport-audit --matrix quick passes",
+        "the header says @vs-type grow",
+        "the component uses no vw, vh or svh units and no data-vs=\"fit\"",
+        "the final answer contains the viewport report table"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "threejs-ring-hero",
+      "prompt": "Build a full-screen hero with a Three.js ring of gold bars on the right and the headline on the left.",
+      "expected_output": "A hero whose 3D ring stays fully visible at uw-half and uw-half-stress, through an aspect-aware camera or an aspect-locked stage, with a key-visual proxy.",
+      "files": ["tests/fixtures/viewport-safe.config.json"],
+      "assertions": [
+        "lint-sizing reports 0 errors",
+        "viewport-audit --matrix required passes every required viewport",
+        "C7 reports the key-visual proxy fully visible at uw-half and uw-half-stress (no C7 finding)",
+        "the code uses containCamera/ContainCamera or an aspect-locked stage, and the answer names which",
+        "a transparent data-vs=\"key-visual\" proxy element tracks the ring"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "fix-broken-tall-hero",
+      "prompt": "My manager snaps his browser to half of his ultrawide and this hero breaks (tests/fixtures/BrokenTallHero.tsx). Fix it.",
+      "expected_output": "A fixed copy that passes uw-half and uw-half-stress; the ring is contained and the showreel no longer overflows.",
+      "files": ["tests/fixtures/BrokenTallHero.tsx", "tests/fixtures/HeightLockedScene.tsx", "tests/fixtures/viewport-safe.config.json"],
+      "assertions": [
+        "the fixed component has 0 lint errors",
+        "viewport-audit --matrix required passes every required viewport, with no C9 warning at uw-half or uw-half-stress",
+        "the answer reports the original failing at uw-half and uw-half-stress (C1, C9) and passing at design",
+        "the fix uses an aspect-locked stage, a contain camera or a safe-zone layout, and the answer says which",
+        "HeightLockedScene.tsx is unchanged"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "height-locked-embed-hero",
+      "prompt": "Use tests/fixtures/HeightLockedScene.tsx (it stands in for our Unicorn Studio embed) as a full-screen hero with our headline and CTA on the left.",
+      "expected_output": "A hero that places the scene in an aspect-locked stage (or equivalent) so the ring is never cropped, with a proxy key visual.",
+      "files": ["tests/fixtures/HeightLockedScene.tsx", "tests/fixtures/viewport-safe.config.json"],
+      "assertions": [
+        "lint-sizing reports 0 errors on the new component",
+        "viewport-audit --matrix required passes every required viewport, with no C9 warning",
+        "the scene sits in a box with the 1440/900 aspect ratio contained by both axes, or the answer justifies another approach",
+        "a data-vs=\"key-visual\" proxy covers the ring",
+        "HeightLockedScene.tsx is unchanged"
+      ]
+    }
+  ]
+}

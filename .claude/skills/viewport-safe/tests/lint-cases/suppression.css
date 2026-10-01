@@ -1,0 +1,4 @@
+/* vs-ignore L1: legacy campaign banner, removed with the next release */
+.banner-title { font-size: 6vw; } /* expect L1 */
+
+.banner-sub { font-size: 3vw; } /* vs-ignore L1 */ /* expect L1 */

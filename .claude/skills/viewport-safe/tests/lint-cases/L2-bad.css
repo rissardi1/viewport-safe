@@ -1,0 +1,9 @@
+/* Hero type sized from the window height: 141px at 1720x1280 on a narrow window. */
+.hero-title {
+  font-size: 11vh; /* expect L2 */
+  line-height: 1.02;
+}
+
+.hero-kicker {
+  font-size: clamp(14px, 2svh, 24px); /* expect L2 */
+}

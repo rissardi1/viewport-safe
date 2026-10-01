@@ -1,0 +1,10 @@
+{
+  "brand": "Lint Case Brand",
+  "designFrame": { "width": 1440, "height": 900 },
+  "contentMaxWidth": 1224,
+  "gutter": { "min": 24, "max": 64, "fluid": "4vw" },
+  "displayTypeMax": 96,
+  "stagingUrl": "https://example.framer.app",
+  "pages": ["/"],
+  "auditHideSelectors": ["#__framer-badge-container", ".cookie-banner"]
+}

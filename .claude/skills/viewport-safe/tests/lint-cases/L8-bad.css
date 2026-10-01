@@ -1,0 +1,5 @@
+/* Full-bleed marquee: 17px wider than the page with Windows classic scrollbars. */
+.marquee {
+  width: 100vw; /* expect L8 */
+  margin-left: calc(50% - 50vw);
+}

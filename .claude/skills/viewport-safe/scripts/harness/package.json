@@ -1,0 +1,21 @@
+{
+  "name": "viewport-safe-harness",
+  "private": true,
+  "type": "module",
+  "description": "Renders one Framer/React component so viewport-audit.mjs can test it. Install once: npm --prefix scripts/harness install",
+  "scripts": {
+    "dev": "vite"
+  },
+  "dependencies": {
+    "@react-three/fiber": "^8.17.0",
+    "framer-motion": "^12.0.0",
+    "gsap": "^3.12.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.4.0",
+    "vite": "^6.3.0"
+  }
+}

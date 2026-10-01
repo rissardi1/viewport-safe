@@ -1,0 +1,19 @@
+/* Media box capped on both axes (pattern 6.4). */
+.video {
+  width: min(100%, calc(62svh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  margin-inline: auto;
+}
+
+/* Height from svh, capped by px and by the width it would produce (pattern 6.5). */
+.card {
+  aspect-ratio: 3 / 4;
+  height: min(70svh, 640px, calc(85cqw * 4 / 3));
+  flex: none;
+}
+
+.poster {
+  height: 80svh;
+  aspect-ratio: 2 / 3;
+  max-width: 100%;
+}
