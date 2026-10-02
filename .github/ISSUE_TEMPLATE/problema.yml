@@ -1,0 +1,42 @@
+name: Problema na skill
+description: A skill não carregou, errou, travou ou deu um resultado estranho
+title: "[problema] "
+labels: ["feedback"]
+body:
+  - type: input
+    id: onde
+    attributes:
+      label: Sistema e pasta
+      description: Windows ou macOS, e onde a skill está instalada (clone, pasta de trabalho ou conta inteira)
+    validations:
+      required: true
+  - type: textarea
+    id: pedido
+    attributes:
+      label: O que você pediu ao agente
+      description: Cole o pedido ou resuma. Diga se era um componente novo, uma seção existente ou uma página do Framer.
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: O que você esperava e o que aconteceu
+    validations:
+      required: true
+  - type: textarea
+    id: evidencia
+    attributes:
+      label: Evidência
+      description: Mensagem de erro, print, tamanho de janela e o `report.md` da auditoria, se houver. Não cole tokens nem dados de clientes.
+  - type: dropdown
+    id: parte
+    attributes:
+      label: Parte da skill
+      options:
+        - Não sei
+        - O agente não carregou a skill
+        - Instalação / doctor
+        - Lint (L1–L16) ou hook
+        - Auditoria (C1–C12) ou screenshots
+        - Regras ou documentação
+        - Config do site
