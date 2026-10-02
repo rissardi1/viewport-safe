@@ -2,6 +2,23 @@
 
 Achou um problema na skill ou quer melhorar algo? Ótimo. Este guia mostra o caminho para a correção entrar sem quebrar o que já funciona.
 
+## Tudo pelo Claude Code (o caminho normal)
+
+A skill fica clonada em `~/viewport-safe` (a pasta do seu usuário), e você fala com o Claude Code em linguagem normal. Três pedidos cobrem tudo:
+
+**1. Instalar (uma vez):**
+> Clone https://github.com/rissardi1/viewport-safe em ~/viewport-safe, rode `node scripts/install.mjs --user` dentro dela e depois o `doctor.mjs` da skill instalada. Me diga se terminou com "All good" e se preciso reiniciar o Claude Code.
+
+**2. Só relatar um problema** (não muda arquivo nenhum):
+> A viewport-safe errou aqui: [o que você pediu e o que aconteceu]. Monte o link de issue pré-preenchido do repo viewport-safe com o tamanho da janela e o caminho do relatório da auditoria.
+
+O agente devolve um link; é só abrir, conferir e clicar em "Submit new issue".
+
+**3. Corrigir:**
+> Em ~/viewport-safe, faça um `git pull`, crie uma branch e corrija este problema na viewport-safe: [descrição]. Siga o CONTRIBUTING.md: teste, CHANGELOG e `doctor`. Depois faça push da branch e me dê o link para abrir o pull request.
+
+O agente cria a branch, mexe na skill, roda os testes e faz o push. Você abre o link que ele devolver e clica em "Create pull request". Para dar `push` você precisa de acesso de escrita ao repositório; sem ele, faça um fork e peça o mesmo no seu fork. Depois do merge, rode `git pull` em `~/viewport-safe` e `node scripts/install.mjs --user --force` para atualizar a sua instalação.
+
 ## Antes de mexer
 
 1. **Abra uma issue** (modelo "Problema na skill") ou, se for pequeno, vá direto para o PR. A issue ajuda a registrar o caso mesmo que a correção demore.

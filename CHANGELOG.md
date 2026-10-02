@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-02 — tudo pelo Claude Code
+
+- `CONTRIBUTING.md`: seção "Tudo pelo Claude Code" com os três pedidos (instalar, relatar, corrigir). `CLAUDE.md` do repo: instruções para o agente quando o pedido é mexer na própria skill (branch + PR, link de PR e de issue pré-preenchido, sem `gh`).
+- `scripts/install.mjs` copia só o bloco marcado (`viewport-safe:begin`/`end`) do `CLAUDE.md` para o do usuário, para as instruções de contribuição não irem junto. Testado em pasta temporária.
+
 ## 2026-10-02 — fluxo de contribuição
 
 - `CONTRIBUTING.md`, modelo de pull request, modelo de issue "Problema na skill" e workflow de GitHub Actions (`doctor.yml`) que roda a suíte de testes do lint e duas checagens rápidas em todo PR.

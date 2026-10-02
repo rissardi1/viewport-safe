@@ -79,7 +79,11 @@ if (settings) {
 }
 
 // 3) instructions in CLAUDE.md
-const section = readFileSync(join(REPO, 'CLAUDE.md'), 'utf8').trim();
+// Only the marked block is installed; the rest of this repo's CLAUDE.md (instructions for working on the skill itself) stays here.
+const fullClaudeMd = readFileSync(join(REPO, 'CLAUDE.md'), 'utf8');
+const END = '<!-- viewport-safe:end -->';
+const b = fullClaudeMd.indexOf(BEGIN), e = fullClaudeMd.indexOf(END);
+const section = (b >= 0 && e > b ? fullClaudeMd.slice(b, e + END.length) : fullClaudeMd).trim();
 const current = existsSync(claudeMdPath) ? readFileSync(claudeMdPath, 'utf8') : '';
 if (current.includes(BEGIN)) say('- CLAUDE.md: already has the viewport-safe section');
 else {

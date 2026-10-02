@@ -19,3 +19,14 @@ How it is enforced:
 - The audit cannot see everything (for example text over gradients or images, or a pinned stack that collapses). Looking at the screenshots is part of the check.
 - New components take their brand numbers from a `viewport-safe.config.json` (content width, headline cap). Brand files live in `configs/`; if none fits, ask once or measure the live site with `--measure`.
 <!-- viewport-safe:end -->
+
+# Working on the skill itself (this repo)
+
+Applies when the user asks to report, fix or improve **viewport-safe** (not when they just use it on a component). Read `CONTRIBUTING.md` first.
+
+- **Never push to `main`.** Create a branch from an up-to-date `main` (`git pull`), change `.claude/skills/viewport-safe/` (the only copy of the skill), and open a pull request.
+- Reproduce the problem before changing anything: the window size, the component or page, the audit `report.md` or a screenshot. Say what number changed.
+- Before pushing run `node .claude/skills/viewport-safe/scripts/doctor.mjs`. A changed rule, lint or check needs a case in `tests/lint-cases/` or `tests/fixtures/`. Update `CHANGELOG.md`, and `SKILL.md` stays short (detail goes in `references/`).
+- There is no `gh` CLI to rely on: push the branch (`git push -u origin <branch>`), then give the user this link to open the PR: `https://github.com/rissardi1/viewport-safe/pull/new/<branch>`. If the push is refused (no write access), tell the user to fork the repo or ask the maintainer for access.
+- To only **report** a problem, do not change files: build a pre-filled issue link, `https://github.com/rissardi1/viewport-safe/issues/new?template=problema.yml&title=<url-encoded title>&onde=<system and folder>&pedido=<what was asked>&esperado=<expected vs happened>&evidencia=<error or report path>`, and give it to the user.
+- Never put client names, URLs, tokens or screenshots of client pages in a commit or an issue.
