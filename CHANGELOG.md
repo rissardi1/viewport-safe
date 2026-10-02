@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-02 — fluxo de contribuição
+
+- `CONTRIBUTING.md`, modelo de pull request, modelo de issue "Problema na skill" e workflow de GitHub Actions (`doctor.yml`) que roda a suíte de testes do lint e duas checagens rápidas em todo PR.
+
 ## 2026-10-02 — lições do ajuste do site da Collateral
 
 Novo, vindo de uso real (flywheel e hero da home):

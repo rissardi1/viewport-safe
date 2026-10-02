@@ -170,3 +170,9 @@ scripts/install.mjs             instala em outra pasta ou na conta do usuário
 ```
 
 Para entender a skill por dentro, comece por `.claude/skills/viewport-safe/SKILL.md` e `README.md`.
+
+---
+
+## Contribuindo
+
+Achou um problema ou tem uma correção? Veja o [CONTRIBUTING.md](CONTRIBUTING.md): abra uma issue (modelo "Problema na skill") ou um pull request. Os testes do lint rodam sozinhos em todo PR.

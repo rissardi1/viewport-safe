@@ -1,0 +1,24 @@
+name: doctor
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  lint-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Lint test suite
+        run: node .claude/skills/viewport-safe/tests/run-lint-tests.mjs
+      - name: SKILL.md has a name and description
+        run: |
+          head -n 5 .claude/skills/viewport-safe/SKILL.md | grep -q '^name: viewport-safe' 
+          head -n 8 .claude/skills/viewport-safe/SKILL.md | grep -q '^description:'
+      - name: Install script refuses to run on this repo (smoke test)
+        run: |
+          if node scripts/install.mjs --target "$PWD"; then echo "expected a refusal"; exit 1; fi
