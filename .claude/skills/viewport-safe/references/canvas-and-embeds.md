@@ -93,9 +93,38 @@ Works for any embed, including ones we cannot change (Unicorn Studio, Spline, Ri
 .scene-stage > iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
 ```
 
-For a Framer scene component placed on the canvas, wrap it with the `SceneStage` component in `framer-specifics.md`, section 12. Confirm in the audit screenshots that the embed fills the stage: an embed that sizes itself from the window ignores its parent, and then only fix 4 helps.
+For a Framer scene component placed on the canvas, wrap it with the `SceneStage` component in `framer-specifics.md`, section 12. Confirm in the audit screenshots that the embed fills the stage: an embed that sizes itself from the window ignores its parent, and then only fix 4.5 helps.
 
-### 4.2 Split background and key visual
+**Caveat: letterbox bands are only invisible when the scene has nothing near its edges.** The Collateral Unicorn hero has a vertical stripe pattern and a gold floor reflection that both end at the canvas edge. In a 1720x1440 window with the stage centred, the reflection was sliced by a hard line 183px above the bottom and the stripes started at a hard line at the top. Hiding it needs the section to stop where the scene stops (4.2) or an edge fade.
+
+### 4.2 Aspect-locked section: the hero is only as tall as the scene
+
+When the scene is the section background, do not letterbox it inside a 100vh section. Let the section itself take its height from its width, capped at the window height, and make the scene fill the section:
+
+```css
+.hero { width: 100%; aspect-ratio: 1.55; max-height: 100svh; height: 100svh; }
+.hero > .scene { width: 100%; height: 100%; }
+```
+
+Pick a ratio slightly below the design ratio: 1.55 for a 1440x900 (1.6) design. With a ratio of exactly 1.6 the design frame came out at 1425 / 1.6 = 891px in a window that has a 15px scrollbar, 9px short of the window, so the next section showed through. At 1.55 the height is 919px and `max-height` caps it at 900.
+
+Measured on the live Collateral hero (Unicorn scene filling the section, ratio 1.55, cap 100vh):
+
+| Window | Hero height | Scene | Result |
+|---|---|---|---|
+| 1720x1440 | 1100 | 1705x1100 | ring whole, reflection cut by the section edge as in the design, next section starts at 1100 |
+| 1720x1280 | 1100 | 1705x1100 | same |
+| 1440x900, 1920x950, 1536x730 | 100vh | full window | unchanged |
+| 2560x1440, 3440x1440 | 100vh | full window | unchanged (the cap wins) |
+| phone 393x852, tablet 820x1180 | 100vh | full window | unchanged (the ratio is removed on these breakpoints) |
+
+Trade-off: on tall windows the next section peeks in under the hero (370px at 1720x1440), which is usually what you want instead of empty space. Check the ring at its widest pose: at 1.55 the face-on ring ended at 1672px of 1705, 33px from the edge.
+
+In Framer this is the section frame with Width 1fr, Height 100vh, Aspect Ratio 1.55 and Max Height 100vh, and the scene instance at 100% x 100%. Remove the ratio from the Tablet and Phone replicas (`framer-specifics.md`, section 14), where the section must stay `100vh`.
+
+**Edge fade, if the section must stay full height.** A linear-gradient mask on the scene (`masks.0.mask`, 10% at the top and bottom) turns the hard edge into a soft one. It works, but it also darkens the scene's own top and bottom 10% at the design size, so prefer the aspect-locked section.
+
+### 4.3 Split background and key visual
 
 The full-bleed layer holds only texture (gradient, noise, particles) and is marked `data-vs="bg"`; the key visual lives in a contained box in the layout grid, marked `data-vs="key-visual"`. The page stays full-bleed on every window and only the part whose edges matter is contained. This needs two layers: two scenes, or a scene plus an image or video.
 
@@ -105,7 +134,7 @@ The full-bleed layer holds only texture (gradient, noise, particles) and is mark
 .hero-ring { position: relative; z-index: 1; width: min(100%, calc(560 * var(--vs-u))); aspect-ratio: 1 / 1; justify-self: center; }
 ```
 
-### 4.3 Aspect-aware camera (Three.js / React Three Fiber)
+### 4.4 Aspect-aware camera (Three.js / React Three Fiber)
 
 A `PerspectiveCamera` keeps its vertical field of view, so a narrower window sees less horizontally: that is exactly height-locked scaling. Keep the design's horizontal field of view when the window is narrower than the design:
 
@@ -163,7 +192,7 @@ export function ContainCamera({ designFov = 35, designAspect = 1440 / 900 }: Con
 
 Use it inside the canvas: `<Canvas camera={{ fov: 35 }}><ContainCamera designFov={35} />…</Canvas>`. R3F updates `camera.aspect` on resize by itself; this effect runs after that and adds the FOV change. Put the `<Canvas>` in a `data-vs="key-visual"` parent only if the whole canvas is the key visual; otherwise add a proxy (section 5).
 
-### 4.4 Author the scene inside the safe zone
+### 4.5 Author the scene inside the safe zone
 
 In the scene editor, keep key content between 12.7% and 87.3% of the artboard width (183 to 1257 of 1440). This is the only fix when the scene must stay full-bleed and cannot be wrapped or re-cameraed. Re-check it whenever the scene is edited.
 

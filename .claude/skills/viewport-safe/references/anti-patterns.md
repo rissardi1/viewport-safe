@@ -311,7 +311,7 @@ camera.updateProjectionMatrix()
 ```
 
 ```ts
-// good: hold the design's horizontal FOV on narrow windows (canvas-and-embeds.md, 4.3)
+// good: hold the design's horizontal FOV on narrow windows (canvas-and-embeds.md, 4.4)
 containCamera(camera, w, h, 35, BRAND.designW / BRAND.designH)
 ```
 

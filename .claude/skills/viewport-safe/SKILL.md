@@ -63,6 +63,7 @@ Read the reference that matches the work before writing it:
 |---|---|
 | Any viewport-relative size, hero, media, cards, containers | `references/sizing-patterns.md` |
 | A Framer code component (annotations, BRAND, container queries, canvas vs preview) | `references/framer-specifics.md` |
+| Fixing sizes on a live Framer page through the agent API / DSL (aspect ratio, units, breakpoint inheritance, masks) | `references/framer-specifics.md`, section 14 |
 | GSAP ScrollTrigger, sticky stacks, horizontal galleries, Framer Motion scroll | `references/scroll-animation.md` |
 | Canvas, WebGL, Three.js/R3F, Unicorn Studio, Spline, Rive, Lottie, video | `references/canvas-and-embeds.md` |
 | Fixing a lint finding | `references/anti-patterns.md` (one entry per L-id) |
@@ -118,6 +119,8 @@ The audit checks each position twice, 0.7s apart, and keeps only stable findings
 
 Open every sheet in `<out>/<run>/compare/` with the Read tool. Columns: design | uw-half | uw-half-stress | uw-full | uw-29 | laptop-125. For each sheet write one line: what differs between window shapes, and whether anything is cut off, overlapping, oddly empty or oddly huge. **Anything visibly broken is a failure even if every check passed.** Fix it and rerun.
 
+**Canvas, WebGL and embed heroes: the screenshot is the only check.** The audit cannot see inside a canvas. The live collateral.com hero passed every check at 1720x1440 (`PASS`, no errors, no warnings) while the 3D ring was cut at the right edge; only the screenshot showed it. For anything drawn in a canvas or an embed (Unicorn Studio, Spline, Rive, Lottie, Three.js), open the 1720x1280 and 1720x1440 screenshots and check, by eye, that the key visual is whole and that no hard line cuts through the scene (a glow, a stripe pattern or a floor reflection that stops at the canvas edge). Also check at the animation's widest pose: a rotating mark is narrowest edge-on and widest face-on, so look at more than one frame.
+
 ### Step 7. Report
 
 End your answer with this table (uw-half first), then the visual-review notes. Never say a component is done without it.
@@ -149,6 +152,8 @@ Visual review:
 11. **Scale-to-fit for fixed artboards.** Render at design size and scale by `min(boxW / DESIGN_W, boxH / DESIGN_H)`. Prefer the CSS contain unit; with JS, render at scale 1 until the box is measured. → 6.9
 12. **No clipped text or CTAs; above-the-fold content stays above the fold** at every required viewport.
 13. **Never size with `100vw`.** With Windows classic scrollbars it is ~17px wider than the page and causes sideways scroll. Use `100%`.
+14. **A section holding a height-locked visual may take its height from its width, capped by the window.** Prefer this to a `100vh` section with letterbox bands: `height = min(100svh, width / ratio)`. The scene fills the section, the section is shorter on tall windows, and nothing is cut. Pick a ratio slightly *below* the design ratio (1.55 for a 1.6 design) so the design frame stays exactly `100svh` once a 15-17px scrollbar takes width away. → canvas-and-embeds 4.2
+15. **Scale-to-fit code measures settled sizes.** When a scale depends on the height of content that animates (accordions, cross-fading text), latch only heights that have stopped changing (about 450ms of no resize). Latching the largest height ever seen makes the whole composition shrink the first time two blocks are open at once during a transition. → sizing-patterns 6.9
 
 ## `data-vs` tokens
 

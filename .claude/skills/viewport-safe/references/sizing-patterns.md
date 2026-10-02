@@ -1,6 +1,6 @@
 # Sizing patterns
 
-Copy-paste patterns for rules 1-13. Each one gives the problem, the bad code with its numbers at the required viewports, the good code, and why it works.
+Copy-paste patterns for rules 1-15. Each one gives the problem, the bad code with its numbers at the required viewports, the good code, and why it works.
 
 Numbers assume a full-width component, no scrollbar and a 1440x900 design frame unless stated. With the audit's simulated 17px classic scrollbar, `100%` and `100cqw` are 17px smaller than the window; `vw` is not (that gap is rule 13).
 
@@ -331,6 +331,8 @@ Add `box-sizing: border-box` so the padding stays inside the 100svh.
 
 **Why.** `min-height` makes one screen a floor, not a ceiling: the section fills the window and grows when content needs more, so nothing is ever clipped. The `100vh` line is the fallback for browsers without `svh`. For a `fit` component this is the safety net, not a licence to overflow: the content must still fit the 730px height budget. The only exception is the scale-to-fit stage (6.9), whose content is scaled into the box.
 
+**Variant: the section that is only as tall as its visual.** A hero whose background is a height-locked scene should not be `100svh` on tall windows. Give the section `aspect-ratio: 1.55; max-height: 100svh` so it shrinks to the scene instead of letterboxing it (rule 14, `canvas-and-embeds.md` 4.2). Use a ratio slightly below the design ratio so the design frame stays exactly `100svh` once the scrollbar takes width away.
+
 ---
 
 ## 6.7 Content container
@@ -521,6 +523,13 @@ Result on the live site:
 
 Anchor the width term to the composition's own width plus margins (1320 for a 1200px group). With 1440, the half-screen gain was only 1.19x, because the group is narrower than the window it was designed in.
 
+**Follow-up: the same component, tuned on the live site (flywheel v2.2 to v2.8).** Four lessons that were not obvious from the first retrofit:
+
+1. **Scale the title with the composition.** A section title that is a separate layer keeps its own size and drifts away from the scaled wheel on tall and ultrawide windows. Render the title inside the scaled group (eyebrow, heading, blurb, divider) so one scale value moves everything together, and key the scale to the column width (`columnWidth / groupWidth`) so the title, the wheel and the text share the same left and right edges.
+2. **Do not latch transient heights (rule 15).** The scale also used the measured height of the group (`stageHeight / groupHeight`). The group's height was recorded as the largest value ever seen, to stop the scale from oscillating. The text column cross-fades between three services, and during a switch two blocks are open at once, so the recorded peak was about 900px against a settled 730-760px. The first time you scrolled through the section the scale dropped from 1.067 to 0.93 and stayed there. Measure with a `ResizeObserver`, debounce 450ms, and latch only the settled value. Test it by scrolling through the whole pinned range and recording the scale at 13 points: it must not move.
+3. **A plain width cap decides the scale on normal screens.** From 1440x900 to 1920x950 the height term should not bind. Size the column (`stageContentWidth`) so the width term is the smaller one, and the composition keeps one scale for the whole scroll.
+4. **Spacing that depends on window height needs the same care.** The gap between the title and the wheel is 88px on a 900px window and grows to 150px on a 1300px stage (interpolated). The height latch is keyed on that gap as well, so a resize cannot keep an old, taller measurement.
+
 ---
 
 ## Symptom lookup
@@ -537,3 +546,7 @@ Anchor the width term to the composition's own width plus margins (1320 for a 12
 | Blank first paint or static render | measured state starts at 0 | 6.9 |
 | Section looks empty at 1720x1440 | everything width-bound, lots of spare height | 6.8 (centre content, rebalance columns) |
 | Pinned composition small at 1720x1280, overflowing at 2560x940 | fixed-px group in a vh stage, width-only tiers | 6.9 worked example (contain-scale the group) |
+| Composition shrinks the first time you scroll through a pinned section, then stays small | the scale uses a height latched at a transient peak (two blocks open during a cross-fade) | 6.9 follow-up, rule 15 (latch settled heights) |
+| Canvas hero looks right at 1440x900 but the mark is cut at 1720x1440, and the audit says PASS | height-locked scene in a 100svh section; the audit cannot see inside a canvas | `canvas-and-embeds.md` 4.2 (aspect-locked section), then look at the screenshots |
+| Hard horizontal line across a scene (glow, stripes, reflection) on tall windows | a letterbox band sits across scene content | `canvas-and-embeds.md` 4.1 caveat and 4.2 |
+| Section title or text vanished on phone after a Desktop fix | Desktop `visible=false` is inherited by the replicas | `framer-specifics.md` 14 |

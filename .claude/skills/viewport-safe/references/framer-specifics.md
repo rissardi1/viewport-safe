@@ -19,6 +19,7 @@ Scope: code components and embedded scenes. Native Framer layers built in the ed
 11. [No duplicated breakpoints](#11-no-duplicated-breakpoints)
 12. [Third-party scene components are height-locked](#12-third-party-scene-components-are-height-locked)
 13. [File and import rules](#13-file-and-import-rules)
+14. [Sizing through the agent API (DSL) and breakpoint inheritance](#14-sizing-through-the-agent-api-dsl-and-breakpoint-inheritance)
 
 ---
 
@@ -206,6 +207,8 @@ Let Framer's breakpoint variants handle width. Inside the component, handle shap
 
 Unicorn Studio and Spline components placed full-bleed with Fill or `100vh` must be treated as height-locked until measured. The collateral.com hero ring is exactly this: a full-viewport Unicorn Studio canvas that scales by `height / 900` and runs about 82px past the right edge at 1720x1280 (worked example in `canvas-and-embeds.md`).
 
+If the scene is the section background, an aspect-locked *section* (the section itself is only as tall as the scene, `canvas-and-embeds.md` 4.2) needs no wrapper component at all: set the aspect ratio and a Max Height on the section frame in Framer. It also avoids the hard edge a letterboxed stage leaves across a scene with a glow or pattern.
+
 To put an existing Framer scene component inside an aspect-locked stage, wrap it in a small code component that takes it as a component instance:
 
 ```tsx
@@ -277,7 +280,7 @@ addPropertyControls(SceneStage, {
 })
 ```
 
-Check in the audit screenshots that the scene fills the stage. If the embed sizes itself from the window rather than its parent, no wrapper can constrain it: re-author the scene inside the safe zone instead (fix 4 in `canvas-and-embeds.md`). Here the whole stage is the key visual; to check a specific object in the scene, add a proxy (`canvas-and-embeds.md`, section 5).
+Check in the audit screenshots that the scene fills the stage. If the embed sizes itself from the window rather than its parent, no wrapper can constrain it: re-author the scene inside the safe zone instead (fix 4.5 in `canvas-and-embeds.md`). Here the whole stage is the key visual; to check a specific object in the scene, add a proxy (`canvas-and-embeds.md`, section 5).
 
 ## 13. File and import rules
 
@@ -286,3 +289,31 @@ Check in the audit screenshots that the scene fills the stage. If the embed size
 - The audit harness resolves bare `gsap`/`three` imports from its own `node_modules` and loads `https://esm.sh/...` natively. `https://framer.com/m/...` modules only work in URL mode: `node scripts/viewport-audit.mjs --url <framer preview URL> --matrix quick`.
 - `ControlType.ResponsiveImage` has no `defaultValue`; set the default while destructuring props. Give every other control a `defaultValue` so the canvas never renders blank.
 - `data-vs` tokens (`fit`, `scroll-scene`, `above-fold`, `key-visual`, `bg`, `bleed`, `clip-ok`, `overlay-ok`) are harmless in production. Add them while building; the audit selects them with `[data-vs~="token"]`.
+
+## 14. Sizing through the agent API (DSL) and breakpoint inheritance
+
+Findings from fixing the live Collateral home page with `framer.agent.applyChanges`. They apply to any layer on a Framer page, not only code components.
+
+**Replicas inherit everything from the Desktop breakpoint.** Tablet, Phone and Desktop Large are replicas of the Desktop (primary) breakpoint. Anything set on the Desktop node reaches them unless they override it, and that includes `visible`, `aspectRatio`, `maxHeight` and masks. Two consequences:
+
+- Hiding a layer on Desktop (`visible="false"`) hides it on Tablet and Phone too. When a replacement only exists on Desktop, set `visible="true"` on the replica ids (`<breakpointId><originalId>`, for example `T97sWI4qFHxhIkwIGl`). Forgetting this removed a section title from the phone layout.
+- Before changing a Desktop size, freeze the replicas that must not change (set the same width and height explicitly on them), then change Desktop. Check every breakpoint afterwards with `framer.agent.serialize({ id: bp + originalId, depth: 0 }, { pagePath })`.
+
+**Aspect ratio.**
+
+- `aspectRatio` is rejected with "Width and height must not be auto or fit-image". Set both to fixed values (`width="100%" height="100%"`); Framer then derives the height from the width, so `width="100%" height="100%" aspectRatio="1.6" maxHeight="100%"` is a box that is as tall as its width allows but never taller than its parent.
+- The ratio cannot be cleared with DSL (`""`, `null`, `none` and `0` are all rejected). Clear it with the plugin API: `await (await framer.getNode(id)).setAttributes({ aspectRatio: null })`. The same call clears `maxHeight`.
+
+**Units.** Heights take `px`, `vh`, `%`, `fr` and `auto`; widths take `px`, `%`, `fr` and `auto`. `height="62.5vw"` is silently rewritten to `62.5vh`, so a width-derived height can only come from `aspectRatio`.
+
+**Masks.** `masks.0.mask="linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(0,0,0,0) 100%)"` fades a frame or instance. Clear it on a replica with `masks.0.mask=null`.
+
+**Component controls.**
+
+- The DSL key is the camel-cased control *title*, not the property name: a control titled "Title: Gap" is `$control__titleGap`, not `$control__sectionGap`. Read the real keys back with `serialize` before writing.
+- Nested object controls (`ControlType.Object`, for example a `wheel` group with `sizePhone`) cannot be written with the DSL ("Cannot apply `$control__wheel`"). When a designer needs a per-breakpoint value, add a top-level number control (`phoneWheelSize`, `phoneItemGap`) where `0` means "use the old value".
+- Values are per instance, so the Desktop, Desktop Large, Tablet and Phone instances can differ even though they share one component. Use that for per-breakpoint tuning instead of branching on `window.innerWidth`.
+
+**React types.** `textWrap: "balance"` is missing from some `CSSProperties` versions. Add it as `...({ textWrap: "balance" } as any)`, or the Framer typecheck reports new errors.
+
+**Verify with a preview, not with the canvas.** The agent API does not render. After every size change, ask for a republish and measure the published page (`viewport-audit.mjs --url`, plus a screenshot per required viewport). A branch preview URL is built from the branch name and id, so ask for it instead of guessing.
